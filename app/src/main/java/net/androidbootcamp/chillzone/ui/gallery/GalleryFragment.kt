@@ -30,7 +30,6 @@ class GalleryFragment : Fragment() {
     ): View? {
         (activity?.getApplication() as ChillApp).appComponent.inject(this)
 
-
         galleryViewModel =
             ViewModelProviders.of(this, vmfactory).get(GalleryViewModel::class.java)
 
