@@ -13,4 +13,5 @@ import kotlin.reflect.KClass
 interface AppComponent {
     fun inject (galleryFragment: GalleryFragment)
     fun inject (homeFragment: HomeFragment)
+    fun inject (vmFactory: VMFactory)
 }

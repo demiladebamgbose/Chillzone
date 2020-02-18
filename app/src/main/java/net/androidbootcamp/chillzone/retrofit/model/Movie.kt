@@ -3,7 +3,7 @@ package net.androidbootcamp.chillzone.retrofit.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class Movie constructor(@Expose @SerializedName("popularity") var popularity : Int,
+data class Movie constructor(@Expose @SerializedName("popularity") var popularity : Double,
                              @Expose @SerializedName("vote_count") var voteCount : Int,
                              @Expose @SerializedName("video") var video : Boolean,
                              @Expose @SerializedName("poster_path") var posterPath : String,

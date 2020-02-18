@@ -1,5 +1,6 @@
 package net.androidbootcamp.chillzone.retrofit
 
+import com.google.gson.GsonBuilder
 import net.androidbootcamp.chillzone.retrofit.model.MovieResult
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -28,10 +29,8 @@ class Retrofity {
                 .client(OkHttpClient.Builder()
                     .addNetworkInterceptor(HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY)).build())
-                .addConverterFactory(GsonConverterFactory.create())
                 .callbackExecutor(Executors.newSingleThreadExecutor())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build()
     }
-
-
 }

@@ -3,6 +3,7 @@ package net.androidbootcamp.chillzone.dagger
 import dagger.Module
 import dagger.Provides
 import net.androidbootcamp.chillzone.ChillApp
+import net.androidbootcamp.chillzone.repositories.MovieRepository
 import net.androidbootcamp.chillzone.retrofit.MovieInterface
 import net.androidbootcamp.chillzone.retrofit.Retrofity
 import net.androidbootcamp.chillzone.viewModels.VMFactory
@@ -21,12 +22,18 @@ class AppModule constructor(val chillApp: ChillApp) {
     @Singleton
     @Provides
     fun providesVMFactory() : VMFactory {
-        return VMFactory()
+        return VMFactory(chillApp)
     }
 
     @Singleton
     @Provides
     fun providesMovieInterface() : MovieInterface {
         return Retrofity.retrofit.create(MovieInterface::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesMovieRepository() : MovieRepository {
+        return MovieRepository(providesMovieInterface())
     }
 }
