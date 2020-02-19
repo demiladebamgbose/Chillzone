@@ -41,20 +41,17 @@ class HomeFragment : Fragment() {
         val homeBinding: FragmentHomeBinding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_home, container, false)
 
+
         homeBinding.state = homeViewModel
         homeBinding.lifecycleOwner = this
-        var movies : MutableList<Movie>?
+        homeViewModel.discoverMovies(getString(R.string.apiKey));
 
-        var homeFragmentScope = CoroutineScope(Dispatchers.Main)
         try{
-            homeFragmentScope.launch {
-                movies = homeViewModel.discoverMovies(getString(R.string.apiKey)).await().results
-                homeViewModel.num.value = movies?.size.toString()
-            }
-
+           homeViewModel.discoverMovies(getString(R.string.apiKey))
         } catch (err:Exception) {
            err.printStackTrace()
         }
+
         return homeBinding.getRoot()
     }
 }

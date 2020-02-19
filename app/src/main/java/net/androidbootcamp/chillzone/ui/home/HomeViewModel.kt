@@ -18,18 +18,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(mRepository: MovieRepository): ViewModel(), Observable {
 
     var movieRepository: MovieRepository
-
-    init {
-        movieRepository = mRepository
-    }
-
-    fun discoverMovies (keyString: String): Deferred<MovieResult> {
-        return viewModelScope.async {
-            movieRepository.discoverMoviesApi(keyString)
-        }
-    }
-
-
+    lateinit var movies : MovieResult
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
     }
@@ -38,6 +27,21 @@ class HomeViewModel @Inject constructor(mRepository: MovieRepository): ViewModel
     val num = MutableLiveData<String>().apply {
         value = "7788"
     }
+
+    init {
+        movieRepository = mRepository
+    }
+
+    fun discoverMovies (keyString: String) {
+        viewModelScope.async {
+            movies = movieRepository.discoverMoviesApi(keyString)
+            num.value = movies.results.size.toString()
+
+        }
+    }
+
+
+
 
     val text: LiveData<String> = _text
 

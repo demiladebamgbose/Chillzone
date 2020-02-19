@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "918175540056",
+    "firebase_url": "https://chillzone-67337.firebaseio.com",
+    "project_id": "chillzone-67337",
+    "storage_bucket": "chillzone-67337.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918175540056:android:313637f651d6a82a4bbb2d",
+        "android_client_info": {
+          "package_name": "net.androidbootcamp.chillzone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918175540056-sc8icv6bd588gckh5eo8k53123ebllbr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.androidbootcamp.chillzone",
+            "certificate_hash": "4cadadc86f234c65ca2c2f0378945858c31e0a81"
+          }
+        },
+        {
+          "client_id": "918175540056-7p7ea4jejdugr4lkl5ok70no60u5lp6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9C-v2tHC9_0PqCkS1OwChLXGLLvMqKwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918175540056-7p7ea4jejdugr4lkl5ok70no60u5lp6m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

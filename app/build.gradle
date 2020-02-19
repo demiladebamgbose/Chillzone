@@ -37,6 +37,9 @@ android {
     }
 }
 
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
 dependencies {
     ext.dagger2_version = '2.15'
 
@@ -97,6 +100,17 @@ dependencies {
 
     // View-Model Scope Coroutine
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+
+    // Firebase analytics
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    //Play services
+    implementation 'com.google.gms:google-services:4.3.3'
+    // Cloud fireStore
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.0'
+
+    // cloud messaging for notifications
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.0'
+
 
 
 
