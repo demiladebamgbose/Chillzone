@@ -26,7 +26,6 @@ class VMFactory constructor(chillApp: ChillApp): ViewModelProvider.Factory {
             return HomeViewModel(movieRepository) as T
         } else if(modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             return LoginViewModel(loginRepository) as T
-
         } else throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
