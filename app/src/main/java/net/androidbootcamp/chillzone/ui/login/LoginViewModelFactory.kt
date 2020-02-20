@@ -3,7 +3,7 @@ package net.androidbootcamp.chillzone.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import net.androidbootcamp.chillzone.data.LoginDataSource
-import net.androidbootcamp.chillzone.data.LoginRepository
+import net.androidbootcamp.chillzone.repositories.UserRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
@@ -15,7 +15,7 @@ class LoginViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
             return LoginViewModel(
-                loginRepository = LoginRepository(
+                userRepository = UserRepository(
                     dataSource = LoginDataSource()
                 )
             ) as T

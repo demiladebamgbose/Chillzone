@@ -1,5 +1,7 @@
-package net.androidbootcamp.chillzone.data
+package net.androidbootcamp.chillzone.repositories
 
+import net.androidbootcamp.chillzone.data.LoginDataSource
+import net.androidbootcamp.chillzone.data.Result
 import net.androidbootcamp.chillzone.data.model.User
 
 /**
@@ -7,7 +9,7 @@ import net.androidbootcamp.chillzone.data.model.User
  * maintains an in-memory cache of login status and user credentials information.
  */
 
-class LoginRepository(val dataSource: LoginDataSource) {
+class UserRepository(val dataSource: LoginDataSource) {
 
     // in-memory cache of the loggedInUser object
     var user: User? = null
