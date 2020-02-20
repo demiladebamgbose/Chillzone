@@ -41,6 +41,7 @@ class HomeFragment : Fragment() {
         val homeBinding: FragmentHomeBinding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_home, container, false)
 
+        var homeScope = CoroutineScope(Dispatchers.Main)
 
         homeBinding.state = homeViewModel
         homeBinding.lifecycleOwner = this

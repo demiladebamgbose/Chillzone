@@ -55,6 +55,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
+    implementation 'androidx.annotation:annotation:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -66,14 +67,14 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     // Dagger
-        // Required
+    // Required
     implementation "com.google.dagger:dagger:$dagger2_version"
     kapt "com.google.dagger:dagger-compiler:$dagger2_version"
-        // Optional
+    // Optional
     implementation "com.google.dagger:dagger-android:$dagger2_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger2_version"
 
-        // Dagger Support library support (optional)
+    // Dagger Support library support (optional)
     kapt "com.google.dagger:dagger-android-support:$dagger2_version"
 
     // Livedata
@@ -111,7 +112,8 @@ dependencies {
     // cloud messaging for notifications
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.0'
 
-
+    // Firebase auth
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
 
 
 }
