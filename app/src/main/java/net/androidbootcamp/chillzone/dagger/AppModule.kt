@@ -51,8 +51,8 @@ class AppModule constructor(val chillApp: ChillApp) {
 
     @Singleton
     @Provides
-    fun providesUserRepository(loginDataSource: LoginDataSource) : UserRepository {
-        return UserRepository(loginDataSource)
+    fun providesUserRepository(loginDataSource: LoginDataSource, appDatabase: AppDatabase) : UserRepository {
+        return UserRepository(loginDataSource, appDatabase)
     }
 
     @Singleton

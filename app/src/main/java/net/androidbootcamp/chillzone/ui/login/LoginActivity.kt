@@ -14,8 +14,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.databinding.DataBindingComponent
+import androidx.databinding.DataBindingUtil
 
 import net.androidbootcamp.chillzone.R
+import net.androidbootcamp.chillzone.databinding.ActivityLoginBinding
 import net.androidbootcamp.chillzone.viewModels.VMFactory
 import javax.inject.Inject
 
@@ -27,7 +30,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_login)
+        val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding.lifecycleOwner = this
+
+
 
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
@@ -36,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel = ViewModelProviders.of(this, vmFactory)
             .get(LoginViewModel::class.java)
+        binding.state = loginViewModel
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer

@@ -9,9 +9,10 @@ import org.jetbrains.annotations.Nullable
 
 @Entity(tableName = UserEntity.TABLE_NAME)
 data class UserEntity (@PrimaryKey val email: String,
-                       @Nullable @ColumnInfo(name = "displayName") val displayName: String?,
-                       @ColumnInfo(name = "password") val password: String
-) {
+                       @ColumnInfo(name = "password") val password: String,
+                       @Nullable @ColumnInfo(name = "displayName") val displayName: String?
+
+                       ) {
     companion object{
         const val TABLE_NAME = "user"
     }
