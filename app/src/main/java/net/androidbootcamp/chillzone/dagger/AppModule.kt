@@ -1,11 +1,15 @@
 package net.androidbootcamp.chillzone.dagger
 
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import net.androidbootcamp.chillzone.ChillApp
+import net.androidbootcamp.chillzone.data.LoginDataSource
 import net.androidbootcamp.chillzone.repositories.MovieRepository
+import net.androidbootcamp.chillzone.repositories.UserRepository
 import net.androidbootcamp.chillzone.retrofit.MovieInterface
 import net.androidbootcamp.chillzone.retrofit.Retrofity
+import net.androidbootcamp.chillzone.room.AppDatabase
 import net.androidbootcamp.chillzone.viewModels.VMFactory
 import org.jetbrains.annotations.Nullable
 import retrofit2.Retrofit
@@ -33,7 +37,28 @@ class AppModule constructor(val chillApp: ChillApp) {
 
     @Singleton
     @Provides
-    fun providesMovieRepository() : MovieRepository {
-        return MovieRepository(providesMovieInterface())
+    fun providesMovieRepository(movieInterface: MovieInterface) : MovieRepository {
+        return MovieRepository(movieInterface)
+    }
+
+    @Singleton
+    @Provides
+    fun providesAppDatabase() : AppDatabase {
+        return Room.databaseBuilder(chillApp,
+            AppDatabase::class.java,
+            "chilLzone")
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun providesUserRepository(loginDataSource: LoginDataSource) : UserRepository {
+        return UserRepository(loginDataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun providesLoginDataSource(): LoginDataSource {
+        return LoginDataSource()
     }
 }
