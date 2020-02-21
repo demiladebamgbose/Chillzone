@@ -1,4 +1,4 @@
-package net.androidbootcamp.chillzone.data
+package net.androidbootcamp.chillzone.firebase.auth
 
 /**
  * A generic class that holds a value with its loading status.

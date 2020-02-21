@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import net.androidbootcamp.chillzone.repositories.UserRepository
-import net.androidbootcamp.chillzone.data.Result
+import net.androidbootcamp.chillzone.firebase.auth.Result
 
 import net.androidbootcamp.chillzone.R
 

@@ -2,7 +2,7 @@ package net.androidbootcamp.chillzone.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import net.androidbootcamp.chillzone.data.LoginDataSource
+import net.androidbootcamp.chillzone.firebase.auth.LoginDataSource
 import net.androidbootcamp.chillzone.repositories.UserRepository
 
 /**

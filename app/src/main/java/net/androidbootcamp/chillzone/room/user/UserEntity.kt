@@ -4,13 +4,19 @@ import android.view.Display
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import net.androidbootcamp.chillzone.firebase.auth.model.User
+import org.jetbrains.annotations.Nullable
 
 @Entity(tableName = UserEntity.TABLE_NAME)
 data class UserEntity (@PrimaryKey val email: String,
-                       @ColumnInfo(name = "displayName") val displayName: String,
+                       @Nullable @ColumnInfo(name = "displayName") val displayName: String?,
                        @ColumnInfo(name = "password") val password: String
 ) {
     companion object{
         const val TABLE_NAME = "user"
+    }
+
+    fun toUser (): User {
+        return User(this.email, this.password, this.displayName)
     }
 }

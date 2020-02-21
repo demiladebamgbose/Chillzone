@@ -1,18 +1,17 @@
 package net.androidbootcamp.chillzone.dagger
 
 import androidx.room.Room
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import net.androidbootcamp.chillzone.ChillApp
-import net.androidbootcamp.chillzone.data.LoginDataSource
+import net.androidbootcamp.chillzone.firebase.auth.LoginDataSource
 import net.androidbootcamp.chillzone.repositories.MovieRepository
 import net.androidbootcamp.chillzone.repositories.UserRepository
 import net.androidbootcamp.chillzone.retrofit.MovieInterface
 import net.androidbootcamp.chillzone.retrofit.Retrofity
 import net.androidbootcamp.chillzone.room.AppDatabase
 import net.androidbootcamp.chillzone.viewModels.VMFactory
-import org.jetbrains.annotations.Nullable
-import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -58,7 +57,13 @@ class AppModule constructor(val chillApp: ChillApp) {
 
     @Singleton
     @Provides
-    fun providesLoginDataSource(): LoginDataSource {
-        return LoginDataSource()
+    fun providesLoginDataSource(auth: FirebaseAuth): LoginDataSource {
+        return LoginDataSource(auth)
+    }
+
+    @Singleton
+    @Provides
+    fun providesAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
     }
 }

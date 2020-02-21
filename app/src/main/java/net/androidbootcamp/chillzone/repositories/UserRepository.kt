@@ -1,15 +1,17 @@
 package net.androidbootcamp.chillzone.repositories
 
-import net.androidbootcamp.chillzone.data.LoginDataSource
-import net.androidbootcamp.chillzone.data.Result
-import net.androidbootcamp.chillzone.data.model.User
+import androidx.lifecycle.MutableLiveData
+import net.androidbootcamp.chillzone.firebase.auth.LoginDataSource
+import net.androidbootcamp.chillzone.firebase.auth.Result
+import net.androidbootcamp.chillzone.firebase.auth.model.User
+import net.androidbootcamp.chillzone.room.AppDatabase
 
 /**
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
  */
 
-class UserRepository(val dataSource: LoginDataSource) {
+class UserRepository(val dataSource: LoginDataSource, val appDatabase: AppDatabase) {
 
     // in-memory cache of the loggedInUser object
     var user: User? = null
@@ -29,19 +31,45 @@ class UserRepository(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(username: String, password: String): Result<User> {
+    fun login(email: String, password: String): MutableLiveData<User> {
         // handle login
-        val result = dataSource.login(username, password)
 
-        if (result is Result.Success) {
-            setLoggedInUser(result.data)
+        lateinit var result: MutableLiveData<User>
+
+        val Loginresult = dataSource.login(email, password)
+        var uEntity =  appDatabase.UserDao().getUser(email)
+
+        if (uEntity.value != null) {
+             result.value = uEntity.value?.toUser();
+            return result
+        }
+
+        if (Loginresult is Result.Success) {
+            result.value = Loginresult.data
+            setLoggedInUser(Loginresult.data)
         }
 
         return result
     }
 
+    fun signUp(email: String, password: String, displayName: String ) : MutableLiveData<User> {
+        lateinit var result: MutableLiveData<User>
+        appDatabase.UserDao().deleteAllUsers()
+
+        val signUpResult = dataSource.signUp(email, password, displayName)
+
+        if (signUpResult is Result.Success) {
+            result.value = signUpResult.data
+            setLoggedInUser(signUpResult.data)
+        }
+
+        return result
+
+    }
+
     private fun setLoggedInUser(user: User) {
         this.user = user
+        appDatabase.UserDao().saveUser(user.toUserEntity())
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
     }
