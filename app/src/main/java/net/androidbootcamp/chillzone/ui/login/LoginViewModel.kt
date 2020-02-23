@@ -4,13 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import androidx.databinding.Observable
 import net.androidbootcamp.chillzone.repositories.UserRepository
 import net.androidbootcamp.chillzone.firebase.auth.Result
 
 import net.androidbootcamp.chillzone.R
 import net.androidbootcamp.chillzone.firebase.auth.model.User
+import java.util.*
 
-class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
+class LoginViewModel(private val userRepository: UserRepository) : ViewModel(), Observable {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -77,5 +79,13 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
+    }
+
+    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

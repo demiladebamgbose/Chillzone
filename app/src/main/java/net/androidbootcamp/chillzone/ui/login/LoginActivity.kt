@@ -16,6 +16,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
+import kotlinx.android.synthetic.main.activity_login.*
 
 import net.androidbootcamp.chillzone.R
 import net.androidbootcamp.chillzone.databinding.ActivityLoginBinding
@@ -32,17 +33,10 @@ class LoginActivity : AppCompatActivity() {
 
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.lifecycleOwner = this
-
-
-
-        val username = findViewById<EditText>(R.id.username)
-        val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
-        val loading = findViewById<ProgressBar>(R.id.loading)
-
         loginViewModel = ViewModelProviders.of(this, vmFactory)
             .get(LoginViewModel::class.java)
         binding.state = loginViewModel
+
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
