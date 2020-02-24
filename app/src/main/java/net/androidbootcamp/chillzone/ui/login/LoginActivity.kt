@@ -1,6 +1,7 @@
 package net.androidbootcamp.chillzone.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -18,9 +19,12 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import net.androidbootcamp.chillzone.ChillApp
+import net.androidbootcamp.chillzone.MainActivity
 
 import net.androidbootcamp.chillzone.R
 import net.androidbootcamp.chillzone.databinding.ActivityLoginBinding
+import net.androidbootcamp.chillzone.firebase.auth.model.User
+import net.androidbootcamp.chillzone.firebase.auth.Result
 import net.androidbootcamp.chillzone.viewModels.VMFactory
 import javax.inject.Inject
 
@@ -36,8 +40,10 @@ class LoginActivity : AppCompatActivity() {
 
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.lifecycleOwner = this
+
         loginViewModel = ViewModelProviders.of(this, vmFactory)
             .get(LoginViewModel::class.java)
+
         binding.state = loginViewModel
 
 
@@ -55,21 +61,22 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        loginViewModel.loginResult.observe(this@LoginActivity, Observer {
-            val loginResult = it ?: return@Observer
-
-            loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
-            }
-            if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
-            }
-            setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            intent =
-        })
+//        loginViewModel.loginResult.observe(this@LoginActivity, Observer {
+//            val loginResult = it ?: return@Observer
+//
+//            loading.visibility = View.GONE
+//            if (loginResult.error != null) {
+//                showLoginFailed(loginResult.error)
+//            }
+//            if (loginResult.success != null) {
+//                updateUiWithUser(loginResult.success)
+//            }
+//            setResult(Activity.RESULT_OK)
+//
+//            //Complete and destroy login activity once successful
+//            intent = Intent(this@LoginActivity, MainActivity::class.java)
+//            startActivity(intent)
+//        })
 
         username.afterTextChanged {
             loginViewModel.loginDataChanged(
@@ -99,15 +106,29 @@ class LoginActivity : AppCompatActivity() {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+                loginViewModel.login(username.text.toString(), password.text.toString()).observe( this@LoginActivity, Observer  {
+
+                    loading.visibility = View.GONE
+
+                    if (it != null && it is Result.Success) {
+                        updateUiWithUser(it.data.displayName)
+                        setResult(Activity.RESULT_OK)
+
+                        //Complete and destroy login activity once successful
+                        intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+
+                    } else {
+                        showLoginFailed(R.string.fui_error_quota_exceeded)
+                    }
+
+                })
             }
         }
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
+    private fun updateUiWithUser(displayName: String?) {
         val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-        // TODO : initiate successful logged in experience
         Toast.makeText(
             applicationContext,
             "$welcome $displayName",

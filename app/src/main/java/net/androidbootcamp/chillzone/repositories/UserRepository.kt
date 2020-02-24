@@ -39,7 +39,9 @@ class UserRepository(val dataSource: LoginDataSource, val appDatabase: AppDataba
 
 //        lateinit var result: MutableLiveData<User>
 
-        val loginresult = dataSource.login(email, password)
+        //val loginresult =
+
+       return dataSource.login(email, password)
         // var uEntity =  appDatabase.UserDao().getUser(email)
 
 //        if (uEntity.value != null) {
@@ -48,9 +50,6 @@ class UserRepository(val dataSource: LoginDataSource, val appDatabase: AppDataba
 //        }
 
 //        Loginresult.observe(LifecycleOwn }, )
-
-
-        return loginresult
     }
 
     fun signUp(email: String, password: String, displayName: String ) : MutableLiveData<User> {

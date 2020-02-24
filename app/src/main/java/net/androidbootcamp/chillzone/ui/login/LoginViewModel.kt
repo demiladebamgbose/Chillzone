@@ -1,5 +1,6 @@
 package net.androidbootcamp.chillzone.ui.login
 
+import android.util.Log
 import android.util.Patterns
 import androidx.databinding.Observable
 import androidx.lifecycle.*
@@ -23,20 +24,21 @@ class LoginViewModel(val userRepository: UserRepository) : ViewModel(), Observab
         return userRepository.user
     }
 
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String): LiveData<Result<User>> {
         // can be launched in a separate asynchronous job
 
-        var userResult: LiveData<Result<User>> = Transformations.map(
-            userRepository.login(email,password) , {result ->
+        var userResult = Transformations.map(userRepository.login(email,password)) {
+            if (it != null && it is Result.Success) {
+                _loginResult.value =
+                    LoginResult(success = LoggedInUserView(displayName = it.data.displayName))
 
-                if (result!= null && result is Result.Success<User>) {
-                    _loginResult.value =
-                        LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-                } else {
-                    _loginResult.value = LoginResult(error = R.string.login_failed)
-                }
+            } else {
+                _loginResult.value = LoginResult(error = R.string.login_failed)
+            }
 
-                result})
+        it}
+        return userResult
+
     }
 
     fun signUp(email: String, password: String, displayName: String) {
@@ -60,22 +62,22 @@ class LoginViewModel(val userRepository: UserRepository) : ViewModel(), Observab
             _loginForm.value = LoginFormState(isDataValid = true)
         }
     }
-    fun signUpDataChanged(email: String, password: String, displayName: String) {
-        loginDataChanged(email, password)
-
-        if (!isUserNameValid(displayName)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-        } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
-        }
-    }
+//    fun signUpDataChanged(email: String, password: String, displayName: String) {
+//        loginDataChanged(email, password)
+//
+//        if (!isUserNameValid(displayName)) {
+//            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
+//        } else {
+//            _loginForm.value = LoginFormState(isDataValid = true)
+//        }
+//    }
 
     // A placeholder username validation check
     private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains('@')) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
+         return if (username.contains('@')) {
+             Patterns.EMAIL_ADDRESS.matcher(username).matches()
         } else {
-            username.isNotBlank()
+             username.isNotBlank()
         }
     }
 
