@@ -1,5 +1,6 @@
 package net.androidbootcamp.chillzone.firebase.auth
 
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -13,29 +14,28 @@ import java.io.IOException
  */
 class LoginDataSource(val auth: FirebaseAuth) {
 
-    fun login(email: String, password: String): Result<User> {
+    fun login(email: String, password: String): MutableLiveData<Result<User>> {
         lateinit var  user: User
-        lateinit var result : Result<User>
+        var result : MutableLiveData<Result<User>> = MutableLiveData()
 
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(object:OnCompleteListener<AuthResult> {
+            .addOnCompleteListener( object: OnCompleteListener<AuthResult> {
                 override fun onComplete(task: Task<AuthResult>) {
                     if (task.isSuccessful) {
+                        task.result
                         user = User(email, password,auth.currentUser?.displayName )
-                        result =
-                            Result.Success(
+                        result.value = Result.Success(
                                 user
                             )
 
 
                     } else {
-                        result =
-                            Result.Error(
+                        result.value = Result.Error(
                                 IOException("Unable to log in user")
                             )
                     }
                 }
-            })
+            } )
         return result
     }
 

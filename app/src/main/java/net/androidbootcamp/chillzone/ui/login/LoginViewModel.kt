@@ -1,10 +1,9 @@
 package net.androidbootcamp.chillzone.ui.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import androidx.databinding.Observable
+import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import net.androidbootcamp.chillzone.repositories.UserRepository
 import net.androidbootcamp.chillzone.firebase.auth.Result
 
@@ -12,7 +11,7 @@ import net.androidbootcamp.chillzone.R
 import net.androidbootcamp.chillzone.firebase.auth.model.User
 import java.util.*
 
-class LoginViewModel(private val userRepository: UserRepository) : ViewModel(), Observable {
+class LoginViewModel(val userRepository: UserRepository) : ViewModel(), Observable {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -26,14 +25,18 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel(), 
 
     fun login(email: String, password: String) {
         // can be launched in a separate asynchronous job
-        val user = userRepository.login(email, password)
 
-        if (user.value != null) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = user.value?.displayName))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
-        }
+        var userResult: LiveData<Result<User>> = Transformations.map(
+            userRepository.login(email,password) , {result ->
+
+                if (result!= null && result is Result.Success<User>) {
+                    _loginResult.value =
+                        LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
+                } else {
+                    _loginResult.value = LoginResult(error = R.string.login_failed)
+                }
+
+                result})
     }
 
     fun signUp(email: String, password: String, displayName: String) {
@@ -82,10 +85,9 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel(), 
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//        TODO //To change body of created functions use File | Settings | File Templates.
     }
 }

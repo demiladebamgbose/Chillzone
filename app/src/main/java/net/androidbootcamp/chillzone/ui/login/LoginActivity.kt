@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import kotlinx.android.synthetic.main.activity_login.*
+import net.androidbootcamp.chillzone.ChillApp
 
 import net.androidbootcamp.chillzone.R
 import net.androidbootcamp.chillzone.databinding.ActivityLoginBinding
@@ -30,6 +31,8 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (application as ChillApp).appComponent.inject(this)
 
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.lifecycleOwner = this
@@ -65,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
-            finish()
+            intent =
         })
 
         username.afterTextChanged {

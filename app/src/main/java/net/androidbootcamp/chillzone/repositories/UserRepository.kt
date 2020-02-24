@@ -1,5 +1,8 @@
 package net.androidbootcamp.chillzone.repositories
 
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.androidbootcamp.chillzone.firebase.auth.LoginDataSource
 import net.androidbootcamp.chillzone.firebase.auth.Result
@@ -31,25 +34,23 @@ class UserRepository(val dataSource: LoginDataSource, val appDatabase: AppDataba
         dataSource.logout()
     }
 
-    fun login(email: String, password: String): MutableLiveData<User> {
+    fun login(email: String, password: String): MutableLiveData<Result<User>> {
         // handle login
 
-        lateinit var result: MutableLiveData<User>
+//        lateinit var result: MutableLiveData<User>
 
-        val Loginresult = dataSource.login(email, password)
-        var uEntity =  appDatabase.UserDao().getUser(email)
+        val loginresult = dataSource.login(email, password)
+        // var uEntity =  appDatabase.UserDao().getUser(email)
 
-        if (uEntity.value != null) {
-             result.value = uEntity.value?.toUser();
-            return result
-        }
+//        if (uEntity.value != null) {
+//             result.value. = uEntity.value?.toUser();
+//            return result
+//        }
 
-        if (Loginresult is Result.Success) {
-            result.value = Loginresult.data
-            setLoggedInUser(Loginresult.data)
-        }
+//        Loginresult.observe(LifecycleOwn }, )
 
-        return result
+
+        return loginresult
     }
 
     fun signUp(email: String, password: String, displayName: String ) : MutableLiveData<User> {
