@@ -23,7 +23,6 @@ class LoginViewModel(val userRepository: UserRepository) : ViewModel(), Observab
     fun getLoggedInUser (): User? {
         return userRepository.user
     }
-    var list = LinkedList<Int>
 
     fun login(email: String, password: String): LiveData<Result<User>> {
         // can be launched in a separate asynchronous job
