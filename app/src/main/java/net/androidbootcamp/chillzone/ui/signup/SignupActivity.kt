@@ -3,6 +3,8 @@ package net.androidbootcamp.chillzone.ui.signup
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import com.google.android.gms.common.SignInButton
+import kotlinx.android.synthetic.main.activity_signup.*
 import net.androidbootcamp.chillzone.ChillApp
 import net.androidbootcamp.chillzone.R
 import net.androidbootcamp.chillzone.databinding.ActivitySignupBinding
@@ -24,6 +26,11 @@ class SignupActivity : AppCompatActivity() {
 
         loginViewModel = vmFactory.create(LoginViewModel::class.java)
         binding.state = loginViewModel
+
+        supportActionBar?.hide()
+        sign_in_button.setColorScheme(SignInButton.COLOR_DARK)
+        sign_in_button.setSize(SignInButton.SIZE_WIDE)
+
 
     }
 }
