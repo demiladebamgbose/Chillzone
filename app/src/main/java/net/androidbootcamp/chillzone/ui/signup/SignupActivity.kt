@@ -20,7 +20,7 @@ import net.androidbootcamp.chillzone.databinding.ActivitySignupBinding
 import net.androidbootcamp.chillzone.helpers.afterTextChanged
 import net.androidbootcamp.chillzone.ui.login.LoginViewModel
 import net.androidbootcamp.chillzone.viewModels.VMFactory
-«import javax.inject.Inject
+import javax.inject.Inject
 
 class SignupActivity : AppCompatActivity() {
 
