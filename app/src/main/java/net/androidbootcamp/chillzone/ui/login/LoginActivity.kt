@@ -27,6 +27,7 @@ import net.androidbootcamp.chillzone.R
 import net.androidbootcamp.chillzone.databinding.ActivityLoginBinding
 import net.androidbootcamp.chillzone.firebase.auth.model.User
 import net.androidbootcamp.chillzone.firebase.auth.Result
+import net.androidbootcamp.chillzone.ui.signup.SignupActivity
 import net.androidbootcamp.chillzone.viewModels.VMFactory
 import javax.inject.Inject
 
@@ -134,6 +135,11 @@ class LoginActivity : AppCompatActivity() {
 
                 })
             }
+        }
+
+        signupLink.setOnClickListener(){
+            val intent = Intent(this@LoginActivity, SignupActivity::class.java)
+            startActivity(intent)
         }
     }
 
