@@ -27,6 +27,7 @@ import net.androidbootcamp.chillzone.R
 import net.androidbootcamp.chillzone.databinding.ActivityLoginBinding
 import net.androidbootcamp.chillzone.firebase.auth.model.User
 import net.androidbootcamp.chillzone.firebase.auth.Result
+import net.androidbootcamp.chillzone.helpers.afterTextChanged
 import net.androidbootcamp.chillzone.ui.signup.SignupActivity
 import net.androidbootcamp.chillzone.viewModels.VMFactory
 import javax.inject.Inject
@@ -160,14 +161,14 @@ class LoginActivity : AppCompatActivity() {
 /**
  * Extension function to simplify setting an afterTextChanged action to EditText components.
  */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
-}
+//fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+//    this.addTextChangedListener(object : TextWatcher {
+//        override fun afterTextChanged(editable: Editable?) {
+//            afterTextChanged.invoke(editable.toString())
+//        }
+//
+//        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+//
+//        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+//    })
+//}

@@ -62,15 +62,15 @@ class LoginViewModel(val userRepository: UserRepository) : ViewModel(), Observab
             _loginForm.value = LoginFormState(isDataValid = true)
         }
     }
-//    fun signUpDataChanged(email: String, password: String, displayName: String) {
-//        loginDataChanged(email, password)
-//
-//        if (!isUserNameValid(displayName)) {
-//            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-//        } else {
-//            _loginForm.value = LoginFormState(isDataValid = true)
-//        }
-//    }
+    fun signUpDataChanged(email: String, password: String, displayName: String) {
+        loginDataChanged(email, password)
+
+        if (!isUserNameValid(displayName)) {
+            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
+        } else {
+            _loginForm.value = LoginFormState(isDataValid = true)
+        }
+    }
 
     // A placeholder username validation check
     private fun isUserNameValid(username: String): Boolean {
