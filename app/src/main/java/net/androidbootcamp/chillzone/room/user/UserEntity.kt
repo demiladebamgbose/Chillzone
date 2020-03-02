@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable
 
 @Entity(tableName = UserEntity.TABLE_NAME)
 data class UserEntity (@PrimaryKey val email: String,
-                       @ColumnInfo(name = "password") val password: String,
+                       @Nullable @ColumnInfo(name = "password") val password: String?,
                        @Nullable @ColumnInfo(name = "displayName") val displayName: String?
 
                        ) {

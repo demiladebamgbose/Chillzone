@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import net.androidbootcamp.chillzone.firebase.auth.LoginDataSource
 import net.androidbootcamp.chillzone.firebase.auth.Result
 import net.androidbootcamp.chillzone.firebase.auth.model.User
@@ -35,42 +36,21 @@ class UserRepository(val dataSource: LoginDataSource, val appDatabase: AppDataba
     }
 
     fun login(email: String, password: String): MutableLiveData<Result<User>> {
-        // handle login
-
-//        lateinit var result: MutableLiveData<User>
-
-        //val loginresult =
-
        return dataSource.login(email, password)
-        // var uEntity =  appDatabase.UserDao().getUser(email)
-
-//        if (uEntity.value != null) {
-//             result.value. = uEntity.value?.toUser();
-//            return result
-//        }
-
-//        Loginresult.observe(LifecycleOwn }, )
     }
 
-    fun signUp(email: String, password: String, displayName: String ) : MutableLiveData<User> {
-        lateinit var result: MutableLiveData<User>
-        appDatabase.UserDao().deleteAllUsers()
-
-        val signUpResult = dataSource.signUp(email, password, displayName)
-
-        if (signUpResult is Result.Success) {
-            result.value = signUpResult.data
-            setLoggedInUser(signUpResult.data)
-        }
-
-        return result
-
+    fun signUp(email: String, password: String, displayName: String) : MutableLiveData<Result<User>> {
+        return dataSource.signUp(email, password, displayName)
     }
 
-    private fun setLoggedInUser(user: User) {
-        this.user = user
-        appDatabase.UserDao().saveUser(user.toUserEntity())
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
+    fun googleSignup(account: GoogleSignInAccount) : MutableLiveData<Result<User>> {
+        return dataSource.signupWithGoogle(account)
     }
+
+//    private fun setLoggedInUser(user: User) {
+//        this.user = user
+//        appDatabase.UserDao().saveUser(user.toUserEntity())
+//        // If user credentials will be cached in local storage, it is recommended it be encrypted
+//        // @see https://developer.android.com/training/articles/keystore
+//    }
 }

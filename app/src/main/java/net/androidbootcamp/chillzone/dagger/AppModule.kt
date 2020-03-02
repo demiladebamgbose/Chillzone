@@ -1,10 +1,12 @@
 package net.androidbootcamp.chillzone.dagger
 
 import androidx.room.Room
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import net.androidbootcamp.chillzone.ChillApp
+import net.androidbootcamp.chillzone.R
 import net.androidbootcamp.chillzone.firebase.auth.LoginDataSource
 import net.androidbootcamp.chillzone.repositories.MovieRepository
 import net.androidbootcamp.chillzone.repositories.UserRepository
@@ -66,4 +68,14 @@ class AppModule constructor(val chillApp: ChillApp) {
     fun providesAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
     }
+
+    @Singleton
+    @Provides
+    fun providesGSO(chillApp: ChillApp): GoogleSignInOptions {
+        return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(chillApp.baseContext.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+    }
 }
+

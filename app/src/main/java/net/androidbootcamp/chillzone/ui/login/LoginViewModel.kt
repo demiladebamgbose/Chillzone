@@ -5,6 +5,7 @@ import android.util.Patterns
 import androidx.databinding.Observable
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import net.androidbootcamp.chillzone.repositories.UserRepository
 import net.androidbootcamp.chillzone.firebase.auth.Result
 
@@ -41,15 +42,32 @@ class LoginViewModel(val userRepository: UserRepository) : ViewModel(), Observab
 
     }
 
-    fun signUp(email: String, password: String, displayName: String) {
+    fun signUp(email: String, password: String, displayName: String): LiveData<Result<User>> {
         // can be launched in a separate asynchronous job
-        val user = userRepository.signUp(email, password, displayName)
+        val userResult = Transformations.map( userRepository.signUp(email, password, displayName)) {
 
-        if (user.value != null) {
+        if (it != null && it is Result.Success) {
             _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = user.value?.displayName))
+                LoginResult(success = LoggedInUserView(displayName = it.data.displayName))
+
         } else {
             _loginResult.value = LoginResult(error = R.string.login_failed)
+        }
+
+        it}
+        return userResult
+
+    }
+
+    fun signupWithGoogle(account: GoogleSignInAccount) {
+        val userResult = Transformations.map(userRepository.googleSignup(account)) {
+            if (it != null && it is Result.Success) {
+                _loginResult.value =
+                    LoginResult(success = LoggedInUserView(displayName = it.data.displayName))
+
+            } else {
+                _loginResult.value = LoginResult(error = R.string.login_failed)
+            }
         }
     }
 

@@ -2,20 +2,19 @@ package net.androidbootcamp.chillzone.ui.signup
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.adapters.TextViewBindingAdapter
 import androidx.lifecycle.Observer
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
-import kotlinx.android.synthetic.main.activity_login.*
+import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.activity_signup.*
-import kotlinx.android.synthetic.main.activity_signup.displayName
-import kotlinx.android.synthetic.main.activity_signup.login
-import kotlinx.android.synthetic.main.activity_signup.password
-import kotlinx.android.synthetic.main.activity_signup.username
 import kotlinx.android.synthetic.main.activity_signup.view.*
 import net.androidbootcamp.chillzone.ChillApp
 import net.androidbootcamp.chillzone.MainActivity
@@ -27,10 +26,13 @@ import net.androidbootcamp.chillzone.ui.login.LoginViewModel
 import net.androidbootcamp.chillzone.viewModels.VMFactory
 import javax.inject.Inject
 
+
 class SignupActivity : AppCompatActivity() {
 
+    val RC_SIGN_IN = 123
     lateinit var loginViewModel:LoginViewModel
     @Inject lateinit var vmFactory: VMFactory
+    @Inject lateinit var mGso: GoogleSignInOptions
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +92,8 @@ class SignupActivity : AppCompatActivity() {
 
         login.setOnClickListener(){
             loadingS.visibility = View.VISIBLE
-            loginViewModel.login(username.text.toString(), password.text.toString()).observe( this@SignupActivity, Observer  {
+            loginViewModel.signUp(username.text.toString(), password.text.toString(),
+                displayName.text.toString()).observe( this@SignupActivity, Observer  {
 
                 loadingS.visibility = View.GONE
 
@@ -108,14 +111,43 @@ class SignupActivity : AppCompatActivity() {
 
             })
         }
-
-
-
-
+        
+        sign_in_button.setOnClickListener() {
+           val mGoogleSignInClient = GoogleSignIn.getClient(this, mGso);
+            val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
     }
 
-    fun signUp(email: String, password: String, displayName: String) {
+    fun updateUiWithUser(displayName: String?) {
+        val welcome = getString(R.string.welcome)
+        Toast.makeText(
+            applicationContext,
+            "$welcome $displayName",
+            Toast.LENGTH_LONG
+        ).show()
+    }
 
+    fun showLoginFailed(@StringRes errorString: Int) {
+        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                val account = task.getResult(ApiException::class.java)
+                if (account != null)
+                    loginViewModel.signupWithGoogle(account)
+            } catch (e: ApiException) {
+//                // Google Sign In failed, update UI appropriately
+//                Log.w(TAG, "Google sign in failed", e)
+//                // ...
+            }
+        }
     }
 
 
