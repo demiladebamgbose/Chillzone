@@ -37,7 +37,7 @@ class LoginViewModel(val userRepository: UserRepository) : ViewModel(), Observab
                 _loginResult.value = LoginResult(error = R.string.login_failed)
             }
 
-        it}
+        it }
         return userResult
 
     }
@@ -54,12 +54,12 @@ class LoginViewModel(val userRepository: UserRepository) : ViewModel(), Observab
             _loginResult.value = LoginResult(error = R.string.login_failed)
         }
 
-        it}
+        it }
         return userResult
 
     }
 
-    fun signupWithGoogle(account: GoogleSignInAccount) {
+    fun signupWithGoogle(account: GoogleSignInAccount) : LiveData<Result<User>> {
         val userResult = Transformations.map(userRepository.googleSignup(account)) {
             if (it != null && it is Result.Success) {
                 _loginResult.value =
@@ -68,7 +68,8 @@ class LoginViewModel(val userRepository: UserRepository) : ViewModel(), Observab
             } else {
                 _loginResult.value = LoginResult(error = R.string.login_failed)
             }
-        }
+        it }
+        return userResult
     }
 
     fun loginDataChanged(email: String, password: String) {

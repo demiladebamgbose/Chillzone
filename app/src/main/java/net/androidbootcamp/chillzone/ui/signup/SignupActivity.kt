@@ -3,6 +3,7 @@ package net.androidbootcamp.chillzone.ui.signup
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -21,6 +22,7 @@ import net.androidbootcamp.chillzone.MainActivity
 import net.androidbootcamp.chillzone.R
 import net.androidbootcamp.chillzone.databinding.ActivitySignupBinding
 import net.androidbootcamp.chillzone.firebase.auth.Result
+import net.androidbootcamp.chillzone.firebase.auth.model.User
 import net.androidbootcamp.chillzone.helpers.afterTextChanged
 import net.androidbootcamp.chillzone.ui.login.LoginViewModel
 import net.androidbootcamp.chillzone.viewModels.VMFactory
@@ -95,27 +97,32 @@ class SignupActivity : AppCompatActivity() {
             loginViewModel.signUp(username.text.toString(), password.text.toString(),
                 displayName.text.toString()).observe( this@SignupActivity, Observer  {
 
-                loadingS.visibility = View.GONE
-
-                if (it != null && it is Result.Success) {
-                    updateUiWithUser(it.data.displayName)
-                    setResult(Activity.RESULT_OK)
-
-                    //Complete and destroy login activity once successful
-                    intent = Intent(this@SignupActivity, MainActivity::class.java)
-                    startActivity(intent)
-
-                } else {
-                    showLoginFailed(R.string.fui_error_quota_exceeded)
-                }
+                handleAuthResult(it)
 
             })
         }
         
         sign_in_button.setOnClickListener() {
-           val mGoogleSignInClient = GoogleSignIn.getClient(this, mGso);
+            loadingS.visibility = View.VISIBLE
+            val mGoogleSignInClient = GoogleSignIn.getClient(this, mGso);
             val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
             startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
+    }
+
+    fun handleAuthResult (result: Result<User>) {
+        loadingS.visibility = View.GONE
+
+        if (result != null && result is Result.Success) {
+            updateUiWithUser(result.data.displayName)
+            setResult(Activity.RESULT_OK)
+
+            //Complete and destroy login activity once successful
+            intent = Intent(this@SignupActivity, MainActivity::class.java)
+            startActivity(intent)
+
+        } else {
+            showLoginFailed(R.string.fui_error_quota_exceeded)
         }
     }
 
@@ -141,11 +148,14 @@ class SignupActivity : AppCompatActivity() {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
                 if (account != null)
-                    loginViewModel.signupWithGoogle(account)
+                    loginViewModel.signupWithGoogle(account).observe(this@SignupActivity, Observer {
+                        handleAuthResult(it)
+                    })
             } catch (e: ApiException) {
-//                // Google Sign In failed, update UI appropriately
-//                Log.w(TAG, "Google sign in failed", e)
-//                // ...
+                loadingS.visibility = View.GONE
+                // Google Sign In failed, update UI appropriately
+                Log.w("SigninActivity", "Google sign in failed", e)
+                // ...
             }
         }
     }
