@@ -69,25 +69,25 @@ class SignupActivity : AppCompatActivity() {
 
         username.apply { afterTextChanged {
             loginViewModel.signUpDataChanged(
-                username.text.toString(),
-                password.text.toString(),
-                displayName.text.toString()
+                username?.text.toString(),
+                password?.text.toString(),
+                displayName?.text.toString()
             )
             }
         }
         password.apply { afterTextChanged {
             loginViewModel.signUpDataChanged(
-                username.text.toString(),
-                password.text.toString(),
-                displayName.text.toString()
+                username?.text.toString(),
+                password?.text.toString(),
+                displayName?.text.toString()
             )
             }
         }
         displayName.apply { afterTextChanged {
             loginViewModel.signUpDataChanged(
-                username.text.toString(),
-                password.text.toString(),
-                displayName.text.toString()
+                username?.text.toString(),
+                password?.text.toString(),
+                displayName?.text.toString()
             )
             }
         }

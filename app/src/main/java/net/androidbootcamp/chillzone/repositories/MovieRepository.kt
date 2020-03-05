@@ -30,6 +30,6 @@ class MovieRepository constructor(mInterface: MovieInterface) {
 
 
     suspend fun discoverMoviesApi (key:String) : MovieResult {
-        return movieInterface.discoverMovies(1,key, "en", "sort" )
+        return movieInterface.discoverMovies(1, key, "en", "sort" )
     }
 }

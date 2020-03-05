@@ -45,13 +45,21 @@ class HomeFragment : Fragment() {
 
         homeBinding.state = homeViewModel
         homeBinding.lifecycleOwner = this
-        homeViewModel.discoverMovies(getString(R.string.apiKey));
+        //homeViewModel.discoverMovies(getString(R.string.apiKey));
 
-        try{
-           homeViewModel.discoverMovies(getString(R.string.apiKey))
-        } catch (err:Exception) {
-           err.printStackTrace()
+        val myActivityScope = CoroutineScope(Dispatchers.Main)
+
+        myActivityScope.launch {
+          val movies =  homeViewModel.movieRepository.discoverMoviesApi(getString(R.string.apiKey))
+                // Update UI
+            homeViewModel.num.value = movies.totalPages.toString()
         }
+
+//        try{
+//           homeViewModel.discoverMovies(getString(R.string.apiKey))
+//        } catch (err:Exception) {
+//           err.printStackTrace()
+//        }
 
         return homeBinding.getRoot()
     }
